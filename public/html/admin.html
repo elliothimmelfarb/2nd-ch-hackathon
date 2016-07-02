@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin</title>
+</head>
+<body  ng-app='myApp' ng-controller='adminCtrl'>
+<div class = "container">
+
+  <h3 class = "text-center"> Create a laundry Schedule</h3>
+  <br>
+  <hr>
+  <div class = "text-center">
+  Enter User Emails (comma seperated):
+  <br><textarea class = "userEmails" ng-model = "inputEmails"></textarea>
+  </div>
+
+  <hr>
+  <div class = "text-center"> 
+  Number Of Weeks: 
+  <br><input type = "number" ng-model = "numWeeks">
+  </div>
+
+  <hr>
+  <div class = "text-center">
+  <form ng-submit = 'createSchedule(inputEmails, numWeeks)'>
+  <button class = "btn btn-success">Create Schedule</button>
+  </form>
+  </div>
+
+  <br>
+  <table class = 'table' ng-show = "showUpdate"><!-- hid for events.length ===0 || ">-->
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Landry Day</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat = 'event in events track by $index'>
+      <td >{{event.email}}</td>
+      <td >{{event.day}}</td>
+      <td >{{event.startTime}}</td>
+      <td >{{event.endTime}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
