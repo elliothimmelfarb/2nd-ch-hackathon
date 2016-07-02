@@ -3,10 +3,12 @@
 const app = angular.module('myApp', ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider){
+
   $stateProvider
-    .state('home', {
+    .state('admin', {
       url: '/',
-      templateUrl: '/html/home.html',
+      templateUrl: '/html/admin.html',
+      controller: 'adminCtrl'
     })
   $urlRouterProvider.otherwise('/');
 });
