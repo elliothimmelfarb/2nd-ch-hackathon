@@ -4,7 +4,7 @@ angular.module('myApp')
 
 .service('Person', function($http, $q){
 
-  this.createSchedule = (emailList, weeks) =>{
+  this.newSchedule = (emailList, weeks) =>{
     return $http.post(`/api/users`, emailList, weeks)
       .then(res => {
         return $q.resolve(res.data);
