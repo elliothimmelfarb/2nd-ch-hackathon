@@ -4,6 +4,6 @@ const express = require('express');
 
 const router = express.Router();
 
-// router.use('', require('./'));
+router.use('/schedules', require('./schedules'));
 
 module.exports = router;
