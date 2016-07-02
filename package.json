@@ -1,0 +1,26 @@
+{
+  "name": "v1-ngex-fullstack-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "postinstall": "bower i"
+  },
+  "engines": {
+    "node": "v6.2.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bower": "^1.7.9",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.2",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta3",
+    "serve-favicon": "^2.3.0"
+  }
+}
