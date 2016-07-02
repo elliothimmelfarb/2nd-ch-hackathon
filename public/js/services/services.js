@@ -2,16 +2,16 @@
 
 angular.module('myApp')
 
-.service('Person', function($http, $q){
+.service('Person', function($http, $q) {
 
-  this.newSchedule = (emailList, weeks) =>{
-    return $http.post(`/api/users`, emailList, weeks)
+  this.newSchedule = (bodyObj) => {
+    return $http.post(`/api/schedules`, bodyObj)
       .then(res => {
         return $q.resolve(res.data);
       })
-      .catch(err => {   
+      .catch(err => {
         console.log('err:', err);
       })
-    };
+  };
 
 });

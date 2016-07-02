@@ -13,27 +13,32 @@ angular.module('myApp')
       console.log("err: ", err);
     })*/
 
-  $scope.createSchedule = (emails, weeks) =>{
+  $scope.createSchedule = (emails, weeks) => {
     //$scope.showUpdate =false;
-    if(emails!== undefined  && weeks !=undefined){
-       $scope.showUpdate =true;
+    if (emails !== undefined && weeks != undefined) {
+      $scope.showUpdate = true;
       console.log("create Schedule")
       console.log("input: ", emails);
 
       var emalList = emails.split(',');
 
       //remove whitespaces
-     emalList = emalList.filter(function(str) {
-     return /\S/.test(str);
-     });
+      emalList = emalList.filter(function(str) {
+        return /\S/.test(str);
+      });
 
       console.log("split emails", emalList);
 
-      Person.newSchedule(emalList, weeks)
-      .then()
-      .catch(err =>{
-        console.log("error: ", err );
-      });
+      var sendObj = {
+        emails: emalList,
+        weeks: weeks
+      };
+
+      Person.newSchedule(sendObj)
+        .then()
+        .catch(err => {
+          console.log("error: ", err);
+        });
     }
   }
 
