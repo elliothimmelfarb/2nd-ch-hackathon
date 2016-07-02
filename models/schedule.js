@@ -15,7 +15,12 @@ let scheduleSchema = new mongoose.Schema({
     type: String
   },
   email: {
-    type: String
+    address: {
+      type: Boolean
+    },
+    subscribed: {
+      type: String
+    }
   }
 });
 
