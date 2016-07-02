@@ -2,7 +2,7 @@
 html(lang="en")
 head
   meta(charset="UTF-8")
-  title #{title}
+  h1(class = "title") Squeaker
   
   link(rel="stylesheet", href="/bower_components/bootstrap/dist/css/bootstrap.min.css")
   link(rel="stylesheet", href="/css/style.css")
@@ -12,9 +12,12 @@ head
   
   script(src="/js/module.js")
   script(src="/js/controllers/mainCtrl.js")
-  //- script(src="/js/services/service.js")
+  script(src="/js/controllers/adminCtrl.js")
+  script(src="/js/services/services.js")
   
 body(ng-app='myApp', ng-controller='mainCtrl')
   .container-fluid
     h1 #{title}
+    //div(class = "text-center")
+      button(type="button" class="btn btn-default" ui-sref ="admin") Manage
     ui-view

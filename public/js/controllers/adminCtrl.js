@@ -19,7 +19,7 @@ angular.module('myApp')
        $scope.showUpdate =true;
       console.log("create Schedule")
       console.log("input: ", emails);
-      //split on spaces and commas
+
       var emalList = emails.split(',');
 
       //remove whitespaces
@@ -38,9 +38,3 @@ angular.module('myApp')
   }
 
 });
-
-
-
-
-
-
