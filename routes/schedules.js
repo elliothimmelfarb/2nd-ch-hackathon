@@ -17,14 +17,6 @@ router.route('/')
 
 .delete((req, res) => Schedule.remove({}, res.handle));
 
-
-// router.put('/generate', (req, res) => {
-//   req.body.weeks = 7;
-//   console.log(req.body.emails, req.body.weeks)
-//   Schedule.generateSchedule(req.body.emails, req.body.weeks);
-//   res.send();
-// })
-
 router.route('/:id')
   .get((req, res) => Schedule.findById(req.params.id, res.handle))
   .delete((req, res) => Schedule.findByIdAndRemove(req.params.id, res.handle))
