@@ -36,12 +36,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+<<<<<<< HEAD
 app.use((req, res, next) => {
   res.handle = (err, data) => {
     res.status(err ? 400 : 200).send(err || data);
   }
   next();
 })
+=======
+app.use((req, res, next)=>{
+  res.handle = (err, dbData) => {
+    res.status(err ? 400 : 200).send(err || dbData);
+  }
+  next();
+});
+>>>>>>> 383b34ef1b70b2c50eaf773b2f970d160b1bb0f5
 
 
 ///////// ROUTERS //////////////

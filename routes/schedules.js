@@ -22,5 +22,23 @@ router.route('/:id')
   .delete((req, res) => Schedule.findByIdAndRemove(req.params.id, res.handle))
   .put((req, res) => Schedule.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true }, res.handle));
 
+router.get('/unsubscribe/:id', (req, res)=> {
+  Schedule.unsubscribe(user, err => {
+    console.log('err: ', err);
+    res.status(err ? 400: 200).send(err || 'Successfully unsubscribed.');
+  });
+});
+
+router.post('/send', (req, res)=>{
+  
+  let event = {
+    type        : req.body.type,
+    email       : 'tobiah.rex@gmail.com',
+    subscribed  : true,
+    _id         : '23412354qweqwerqwerq2345'
+  };
+
+  Schedule.sendEmail(event, res.handle);
+});
 
 module.exports = router;
