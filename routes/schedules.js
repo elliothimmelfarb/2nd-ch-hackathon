@@ -7,16 +7,13 @@ var Schedule = require('../models/schedule');
 
 router.route('/')
   .get((req, res) => Schedule.find({}, res.handle))
-
-
-
+  .delete((req, res) => Schedule.remove({}, res.handle))
+  
 .post((req, res) => {
-  req.body.emails = ['jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', ]
-  Schedule.generate(req.body.emails, 7);
-  res.send();
+  //req.body.emails = ['jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', 'jsndnsdf', ]
+  Schedule.generate(req.body.emails, req.body.weeks, res.handle);
+
 })
-
-
 
 .delete((req, res) => Schedule.remove({}, res.handle));
 

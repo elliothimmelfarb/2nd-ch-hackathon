@@ -2,6 +2,7 @@
 
 angular.module('myApp')
 
+
 .controller('adminCtrl', function($scope, Person) {
   console.log('adminCtrl!');
   /*Person.getAll()
@@ -20,9 +21,9 @@ angular.module('myApp')
       console.log("create Schedule")
       console.log("input: ", emails);
 
-      var emalList = emails.split(',');
+      var emalList = emails.split('[,\\s]+');
 
-      //remove whitespaces
+      //remove whitespaces not working!
       emalList = emalList.filter(function(str) {
         return /\S/.test(str);
       });
@@ -35,7 +36,10 @@ angular.module('myApp')
       };
 
       Person.newSchedule(sendObj)
-        .then()
+        .then(res =>{
+          $scope.events = res.data;
+          console.log("res daata: ", res.data);
+        })
         .catch(err => {
           console.log("error: ", err);
         });

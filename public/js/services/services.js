@@ -4,14 +4,11 @@ angular.module('myApp')
 
 .service('Person', function($http, $q) {
 
-  this.newSchedule = (bodyObj) => {
-    return $http.post(`/api/schedules`, bodyObj)
-      .then(res => {
+  this.newSchedule = (bodyObj) => $http.post(`/api/schedules`, bodyObj)
+      /*.then(res => {
         return $q.resolve(res.data);
       })
       .catch(err => {
         console.log('err:', err);
-      })
-  };
-
+      })*/
 });

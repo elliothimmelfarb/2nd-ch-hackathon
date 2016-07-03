@@ -15,12 +15,10 @@ let scheduleSchema = new mongoose.Schema({
     type: String
   },
   email: {
-    address: {
-      type: Boolean
-    },
-    subscribed: {
-      type: String
-    }
+    type: String
+  },
+  subscibed: {
+    type: Boolean
   }
 });
 
@@ -45,21 +43,80 @@ scheduleSchema.statics.checkToSeeIfPeopleNeedEmails = function() {
   })
 }
 
-scheduleSchema.statics.generate = function(emails, weeks) {
+scheduleSchema.statics.generate = function(emails, weeks, cb) {
   //console.log(emails, weeks);
   console.log("emails: ", emails, '\nweeks: ', weeks);
   let days = weeks * 7;
-  var arrays = [];
   var people = shuffle(emails);
   var daysInCycle = 6;
+
+  //create evenly distributed arrays of people
   var remainder = daysInCycle % people.length;
   var groupSize = Math.floor(people.length / daysInCycle);
   var groupArray = (chunkify(people, daysInCycle));
-  getCalendarEvents(groupArray);
-  // console.log('calendarEvents:', calendarEvents);
+  console.log("groups:", groupArray);
+  //create array of calendar events
+  var calendarEvents = getCalendarEvents(groupArray, days);
+  //console.log("calendar Events: ", calendarEvents);
 
-  //shuffle input of people to randomize
-  function shuffle(array) {
+  Schedule.create(calendarEvents, (err, events) => {
+   if(err) cb(err);
+   console.log("Events -------- ", events);
+   cb(null, events);
+   /*Schedule.find({}, (err, events) =>{
+      if(err) console.log(err);
+     console.log("-------------events-------------:", events);
+     cb(null, events);
+    })*/
+  });
+}
+
+/*scheduleSchema.statics.create = (reqObj, cb) => {
+  console.log("reqObj: ", reqObj);
+  Schedule.create(reqObj, (err, newSchedule) => {
+    if (err) return cb(err);
+    //Schedule.generate();
+    // Schedule.find(newSchedule._id, (err, savedSchedule)=> {
+    //   err ? cb(err) : cb(null, savedSchedule);
+    // });
+  });
+};*/
+
+function getCalendarEvents(array, days) {
+  var calendarEvents = [];
+  console.log("in cal events")
+
+  let firstStart = moment().set({
+    hour: 7,
+    minute: 0,
+    second: 0
+  }).add(1, 'days');
+  
+  for (var index = 0; index < days; index++) {
+
+    var currIndex = ((index + 1) % array.length + array.length) % array.length;
+    var cycleTime = Math.floor(16/array[currIndex].length);
+
+    // var endTime = firstStart.add(cycleTime, 'hours');
+    //console.log("array[currIndex]:", array[currIndex]);
+    var startTime = firstStart.clone();
+    //console.log("\nstartTime for day ------: ", startTime.format('MMMM Do YYYY, h:mm:ss a'));
+    for (var i = 0; i < array[currIndex].length; i++) {
+      var endTime = startTime.clone();
+      endTime.add(cycleTime, 'hours');
+      //console.log("email?: ", array[currIndex][i]);
+      //console.log("startTime", startTime.format('MMMM Do YYYY, h:mm:ss a'));
+      //console.log("endTime", endTime.format('MMMM Do YYYY, h:mm:ss a'));
+      calendarEvents.push({ day: index, startTime: startTime.format(), endTime: endTime.format(), email: array[currIndex][i] })
+      startTime.add(cycleTime, 'hours');
+    }
+    firstStart.add(1, 'days');
+    //console.log('firstStart after add:', firstStart.format('MMMM Do YYYY, h:mm:ss a'));
+  }
+  return calendarEvents;
+}
+
+function shuffle(array) {
     var currentIndex = array.length,
       temporaryValue, randomIndex;
     while (0 !== currentIndex) {
@@ -70,10 +127,10 @@ scheduleSchema.statics.generate = function(emails, weeks) {
       array[randomIndex] = temporaryValue;
     }
     return array;
-  }
+}
 
   //Break people up into even groups
-  function chunkify(a, n) {
+function chunkify(a, n) {
     if (n < 2) return [a];
     var len = a.length;
     var out = [];
@@ -91,70 +148,11 @@ scheduleSchema.statics.generate = function(emails, weeks) {
       }
     }
     return out;
-  }
-
-  //Create calendar events based on number of people and days
-  function getCalendarEvents(array) {
-    var calendarEvents = [];
-
-    let firstStart = moment().set({
-      hour: 7,
-      minute: 0,
-      second: 0
-    }).add(1, 'day');
-
-
-    for (var index = 0; index < days; index++) {
-      //satrt date plus dats
-      //var day = moment().add(index, 'days')
-      //repeatable index loop through people
-      var currIndex = ((index + 1) % array.length + array.length) % array.length;
-
-
-      var cycleTime = Math.floor(16 / groupArray[currIndex].length);
-      // let now = new Date();
-      // let year = now.getFullYear();
-      // let month = now.getMonth() + 1;
-      // let day = now.getDay() + 1;
-      // let tomorrow = `${year}-${month}-${day} 07:00:00`
-      // let startTime = moment(tomorrow).calendar();
-      //start time = current day at 6:00am
-      // var startTime = mom;
-
-
-
-      for (var i = 0; i < groupArray[currIndex].length; i++) {
-        // console.log("startTime", );
-        let startTime = firstStart.clone();
-
-        //startTime.add(cycleTime, 'hours')
-        let endTime = startTime.add(cycleTime, 'hours').format();
-
-        calendarEvents.push({ day: index, startTime: startTime.format(), endTime, email: groupArray[currIndex][i] })
-
-        firstStart.add(cycleTime, 'hours');
-
-        //cycleTime.add(cycleTime, 'hours')
-        // cycleTime += cycleTime;
-      }
-
-    }
-    console.log('calendarEvents:', calendarEvents)
-    Schedule.create(calendarEvents, (err, something) => {
-      console.log(err || something);
-    });
-  }
 }
 
-scheduleSchema.statics.create = (reqObj, cb) => {
-  Schedule.create(reqObj, (err, newSchedule) => {
-    if (err) return cb(err);
-    Schedule.generate();
-    // Schedule.find(newSchedule._id, (err, savedSchedule)=> {
-    //   err ? cb(err) : cb(null, savedSchedule);
-    // });
-  });
-};
+  //Create calendar events based on number of people and days
+
+
 
 scheduleSchema.statics.getOne = (reqId, cb) => {
   Schedule.findById(reqId, (err, dbSchedule) => {
