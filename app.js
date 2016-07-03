@@ -36,7 +36,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use((req, res, next)=>{
+  res.handle = (err, dbData) => {
+    res.status(err ? 400 : 200).send(err || dbData);
+  }
+  next();
+});
 
 
 ///////// ROUTERS //////////////
